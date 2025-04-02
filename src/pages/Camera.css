@@ -1,0 +1,29 @@
+.camera-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.Webcam {
+    width: 100%;
+    /* Chiều rộng 100% cho màn hình điện thoại */
+    height: auto;
+    /* Chiều cao tự động */
+    max-height: 100%;
+    /* Giới hạn chiều cao để không vượt quá màn hình */
+    border: 2px solid #ccc;
+    border-radius: 10px;
+}
+
+button {
+    margin-top: auto;
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
