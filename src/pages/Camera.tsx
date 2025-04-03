@@ -79,7 +79,7 @@ const Camera = () => {
     };
 
     const startFallingStars = () => {
-      setInterval(createStar, 200); // Giảm thời gian xuống 200ms để tạo nhiều ngôi sao hơn
+      setInterval(createStar, 500); // Giảm thời gian xuống 200ms để tạo nhiều ngôi sao hơn
     };
 
     const drawCanvas = () => {
