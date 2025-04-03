@@ -6,7 +6,6 @@ const Camera = () => {
   const recordedChunks = useRef<Blob[]>([]);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [isRecording, setIsRecording] = useState(false);
   const starsRef = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
