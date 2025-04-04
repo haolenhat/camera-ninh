@@ -1,9 +1,9 @@
 // Countdown.tsx
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import './CountDown.css';
 
-
-const Countdown: React.FC = () => {
+const TimeStart: React.FC = () => {
   const navigate = useNavigate(); // Sử dụng useNavigate để điều hướng
   const numbers = [3, 2, 1];
 
@@ -26,4 +26,4 @@ const Countdown: React.FC = () => {
   );
 };
 
-export default Countdown;
+export default TimeStart;
