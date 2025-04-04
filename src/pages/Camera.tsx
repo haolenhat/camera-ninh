@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 
 const Camera = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -8,7 +8,7 @@ const Camera = () => {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const starsRef = useRef<HTMLDivElement[]>([]);
-  const navigate = useNavigate(); // Khởi tạo useNavigate
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const startCamera = async () => {
@@ -79,7 +79,6 @@ const Camera = () => {
       a.click();
       document.body.removeChild(a);
 
-      // Chuyển hướng đến route / sau khi tải xong video
       navigate('/'); // Chuyển hướng đến trang chính
     };
 

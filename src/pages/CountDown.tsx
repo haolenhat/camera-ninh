@@ -1,7 +1,7 @@
 // Countdown.tsx
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import './CountDown.css';
+
 
 const Countdown: React.FC = () => {
   const navigate = useNavigate(); // Sử dụng useNavigate để điều hướng
