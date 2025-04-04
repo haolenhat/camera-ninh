@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const Camera = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -7,6 +8,7 @@ const Camera = () => {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const starsRef = useRef<HTMLDivElement[]>([]);
+  const navigate = useNavigate(); // Khởi tạo useNavigate
 
   useEffect(() => {
     const startCamera = async () => {
@@ -33,24 +35,39 @@ const Camera = () => {
         const mediaRecorder = new MediaRecorder(canvasStream);
         mediaRecorderRef.current = mediaRecorder;
         recordedChunks.current = [];
-
+    
         mediaRecorder.ondataavailable = (event) => {
           if (event.data.size > 0) {
             recordedChunks.current.push(event.data);
           }
         };
-
+    
         mediaRecorder.onstop = saveVideo;
+    
+        // Bắt đầu ghi
         mediaRecorder.start();
-
-        setTimeout(() => {
-          mediaRecorder.stop();
+    
+        const recordDuration = 10000; // Thời gian quay trong mili giây (10 giây)
+    
+        const recordingInterval = setInterval(() => {
+          if (mediaRecorder.state === "recording") {
+            mediaRecorder.stop();
+          }
           setTimeout(() => {
-            startRecording();
+            if (mediaRecorder.state === "inactive") {
+              mediaRecorder.start();
+            }
           }, 100);
-        }, 11000);
+        }, recordDuration);
+    
+        // Dừng quay khi component unmount
+        return () => {
+          clearInterval(recordingInterval);
+          mediaRecorder.stop(); // Đảm bảo dừng ghi khi component unmount
+        };
       }
     };
+    
 
     const saveVideo = () => {
       const blob = new Blob(recordedChunks.current, { type: "video/webm" });
@@ -61,6 +78,9 @@ const Camera = () => {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+
+      // Chuyển hướng đến route / sau khi tải xong video
+      navigate('/'); // Chuyển hướng đến trang chính
     };
 
     const createStar = () => {
@@ -136,7 +156,7 @@ const Camera = () => {
       mediaRecorderRef.current?.stop();
       stream?.getTracks().forEach((track) => track.stop());
     };
-  }, []);
+  }, [navigate]); // Đảm bảo navigate nằm trong dependencies array
 
   return (
     <div className="camera-container">
