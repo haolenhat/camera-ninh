@@ -48,7 +48,7 @@ const Camera = () => {
           setTimeout(() => {
             startRecording();
           }, 100);
-        }, 10000);
+        }, 11000);
       }
     };
 
@@ -68,7 +68,6 @@ const Camera = () => {
       star.className = "star";
       star.innerText = "⭐️";
       star.style.left = `${Math.random() * 100}vw`;
-      star.style.animationDuration = `${Math.random() * 2 + 3}s`;
       document.querySelector(".camera-container")?.appendChild(star);
       starsRef.current.push(star);
 
@@ -79,21 +78,53 @@ const Camera = () => {
     };
 
     const startFallingStars = () => {
-      setInterval(createStar, 500); // Giảm thời gian xuống 200ms để tạo nhiều ngôi sao hơn
+      setInterval(createStar, 500);
     };
 
     const drawCanvas = () => {
       if (canvasRef.current && videoRef.current) {
-        const ctx = canvasRef.current.getContext("2d");
-        if (ctx) {
-          ctx.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext("2d");
+        const video = videoRef.current;
+
+        if (ctx && video.videoWidth > 0 && video.videoHeight > 0) {
+          const videoAspect = video.videoWidth / video.videoHeight;
+          const screenAspect = window.innerWidth / window.innerHeight;
+
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+
+          let drawWidth = canvas.width;
+          let drawHeight = canvas.height;
+
+          if (videoAspect > screenAspect) {
+            drawHeight = canvas.height;
+            drawWidth = videoAspect * drawHeight;
+          } else {
+            drawWidth = canvas.width;
+            drawHeight = drawWidth / videoAspect;
+          }
+
+          const offsetX = (canvas.width - drawWidth) / 2;
+          const offsetY = (canvas.height - drawHeight) / 2;
+
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          
+          // Vẽ video mà không lật
+          ctx.drawImage(video, offsetX, offsetY, drawWidth, drawHeight);
+
+          // Vẽ các ngôi sao lên canvas tại vị trí đúng
           starsRef.current.forEach((star) => {
             const rect = star.getBoundingClientRect();
-            ctx.font = "20px Arial";
-            ctx.fillText(star.innerText, rect.left, rect.top);
+            const canvasRect = canvas.getBoundingClientRect();
+            const x = rect.left - canvasRect.left;
+            const y = rect.top - canvasRect.top;
+            ctx.font = "24px Arial";
+            ctx.fillText(star.innerText, x, y);
           });
         }
       }
+
       requestAnimationFrame(drawCanvas);
     };
 
@@ -113,10 +144,15 @@ const Camera = () => {
         ref={videoRef}
         autoPlay
         playsInline
-        className="w-full h-full"
-        style={{ display: "none" }} // Ẩn phần tử video
+        onLoadedMetadata={() => {
+          if (canvasRef.current) {
+            canvasRef.current.width = window.innerWidth;
+            canvasRef.current.height = window.innerHeight;
+          }
+        }}
+        style={{ display: "none" }}
       />
-      <canvas ref={canvasRef} className="w-full h-full object-contain" /> {/* Sử dụng object-contain cho canvas */}
+      <canvas ref={canvasRef} className="w-full h-full object-contain" />
     </div>
   );
 };
