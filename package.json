@@ -12,10 +12,12 @@
   "dependencies": {
     "@ffmpeg/core": "^0.12.10",
     "@ffmpeg/ffmpeg": "^0.12.15",
+    "mp4box": "^0.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.4.1",
-    "react-webcam": "^7.2.0"
+    "react-webcam": "^7.2.0",
+    "whammy": "^0.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

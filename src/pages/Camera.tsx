@@ -139,20 +139,22 @@ const Camera = () => {
   };
 
   // Lưu video
-  const saveVideo = () => {
-    const blob = new Blob(recordedChunks.current, { type: "video/webm" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `recorded-video-${Date.now()}.webm`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+// Lưu video
+const saveVideo = () => {
+  const blob = new Blob(recordedChunks.current, { type: "video/mp4" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `recorded-video-${Date.now()}.mp4`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 
-    // Khởi động lại đếm ngược
-    setCount(3);
-    setIsVisible(true);
-  };
+  // Khởi động lại đếm ngược
+  setCount(3);
+  setIsVisible(true);
+};
+
 
   const createStar = () => {
     const star = document.createElement("div");
